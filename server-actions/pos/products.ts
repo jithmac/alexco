@@ -22,6 +22,19 @@ export async function getPosProducts() {
       GROUP BY p.id
     `) as any[];
 
+        const variantRows = await query(`
+            SELECT product_id, variant_id, SUM(delta) as stock 
+            FROM inventory_ledger 
+            WHERE variant_id IS NOT NULL 
+            GROUP BY product_id, variant_id
+        `) as any[];
+        
+        const variantStocksMap: Record<string, Record<string, number>> = {};
+        for (const r of variantRows) {
+            if (!variantStocksMap[r.product_id]) variantStocksMap[r.product_id] = {};
+            variantStocksMap[r.product_id][r.variant_id] = Number(r.stock);
+        }
+
         // Map to RxDB expected format
         return rows.map(p => ({
             id: p.id,
@@ -33,7 +46,8 @@ export async function getPosProducts() {
             variations: typeof p.variations === 'string' ? JSON.parse(p.variations) : (p.variations || {}),
             variation_prices: typeof p.variation_prices === 'string' ? JSON.parse(p.variation_prices) : (p.variation_prices || {}),
             variation_sale_prices: typeof p.variation_sale_prices === 'string' ? JSON.parse(p.variation_sale_prices) : (p.variation_sale_prices || {}),
-            stock: Number(p.stock_qty) || 0
+            stock: Number(p.stock_qty) || 0,
+            variant_stocks: variantStocksMap[p.id] || {}
         }));
     } catch (err) {
         console.error("POS Fetch Error:", err);

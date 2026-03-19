@@ -22,6 +22,7 @@ interface Product {
     variations?: Record<string, string[]>;
     variation_prices?: Record<string, number>;
     variation_sale_prices?: Record<string, number>;
+    variant_stocks?: Record<string, number>;
 }
 
 interface VariationQuantityDialogProps {
@@ -41,6 +42,30 @@ function findMatchingCombo(pricesMap: Record<string, number> | undefined, select
         }
     }
     return undefined;
+}
+
+/** Resolve the effective stock given the currently selected variations */
+function resolveStock(
+    baseStock: number,
+    selectedVariations: Record<string, string>,
+    variantStocks?: Record<string, number>,
+    allVariations?: Record<string, string[]>
+): number {
+    if (!variantStocks || Object.keys(variantStocks).length === 0) return baseStock;
+
+    if (allVariations) {
+        const selectedPairs = Object.entries(selectedVariations).map(([k, v]) => `${k}:${v}`);
+        if (selectedPairs.length === Object.keys(allVariations).length) {
+            // Find combo
+            for (const [combo, stock] of Object.entries(variantStocks)) {
+                const comboPairs = combo.split(';').map(s => s.trim());
+                if (comboPairs.length === selectedPairs.length && selectedPairs.every(sp => comboPairs.includes(sp))) {
+                    return stock;
+                }
+            }
+        }
+    }
+    return baseStock;
 }
 
 /** Given selected variations and variation_prices map, compute the effective price.
@@ -141,6 +166,13 @@ export default function VariationQuantityDialog({
     const { currentPrice, originalPrice } = resolvePrice(product.price, selectedVariations, product.variation_prices, product.variation_sale_prices, product.variations);
     const priceChanged = originalPrice !== null || currentPrice !== product.price;
 
+    const currentStock = resolveStock(
+        product.stock,
+        selectedVariations,
+        product.variant_stocks,
+        product.variations
+    );
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[450px]">
@@ -172,9 +204,9 @@ export default function VariationQuantityDialog({
                                 </div>
                                 <span className={cn(
                                     "text-[10px] px-2 py-0.5 rounded font-medium",
-                                    product.stock > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                                    currentStock > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                                 )}>
-                                    {product.stock} in stock
+                                    {currentStock > 0 ? `${currentStock} in stock` : "Out of stock"}
                                 </span>
                             </div>
                         </div>
@@ -237,8 +269,8 @@ export default function VariationQuantityDialog({
                                 variant="ghost"
                                 size="icon"
                                 className="h-9 w-9 rounded-lg hover:bg-slate-100"
-                                onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                                disabled={quantity >= product.stock}
+                                onClick={() => setQuantity(Math.min(currentStock, quantity + 1))}
+                                disabled={quantity >= currentStock}
                             >
                                 <Plus className="h-4 w-4" />
                             </Button>
@@ -265,9 +297,10 @@ export default function VariationQuantityDialog({
                     <Button
                         className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold h-11"
                         onClick={handleConfirm}
+                        disabled={currentStock <= 0}
                     >
                         <ShoppingCart className="h-5 w-5 mr-2" />
-                        Add to Cart
+                        {currentStock <= 0 ? "Out of Stock" : "Add to Cart"}
                     </Button>
                 </DialogFooter>
             </DialogContent>

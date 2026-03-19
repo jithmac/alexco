@@ -199,16 +199,58 @@ export default function EditProductDialog({ product, open, onOpenChange, onSucce
             .map(g => `${g.name}=${g.options.filter(o => o.name).map(o => o.name).join(',')}`)
             .join('; ');
 
+        // Parse variations to generate expected combinations
+        const vars: Record<string, string[]> = {};
+        if (variationsRaw) {
+            variationsRaw.split(';').forEach(part => {
+                const [key, valStr] = part.split('=').map(s => s.trim());
+                if (key && valStr) {
+                    vars[key] = Array.from(new Set(valStr.split(',').map(s => s.trim()).filter(Boolean)));
+                }
+            });
+        }
+        
+        const entries = Object.entries(vars).sort((a, b) => a[0].localeCompare(b[0]));
+        let expectedCombos: string[] = [];
+        if (entries.length > 0) {
+            const generate = (index: number, current: string[]) => {
+                if (index === entries.length) return [current.join('; ')];
+                const [key, values] = entries[index];
+                const vals = Array.isArray(values) ? values : [values];
+                const res: string[] = [];
+                for (const val of vals) {
+                    res.push(...generate(index + 1, [...current, `${key}:${val}`]));
+                }
+                return res;
+            };
+            expectedCombos = generate(0, []);
+        }
+
+        const resolveValue = (obj: Record<string, any>, rawCombo: string) => {
+            if (!obj) return undefined;
+            if (obj[rawCombo] !== undefined) return obj[rawCombo];
+            const normalizedCombo = rawCombo.replace(/\s/g, '');
+            const matchedKey = Object.keys(obj).find(k => k.replace(/\s/g, '') === normalizedCombo);
+            return matchedKey ? obj[matchedKey] : undefined;
+        };
+
         // Build variation_prices and variation_sale_prices based on variants
         const variationPricesObj: Record<string, number> = {};
-        for (const [combo, priceStr] of Object.entries(variantPrices)) {
-            const p = parseFloat(priceStr);
-            if (!isNaN(p) && p > 0) variationPricesObj[combo] = p;
+        for (const combo of expectedCombos) {
+            const priceStr = resolveValue(variantPrices, combo);
+            const p = parseFloat(priceStr || "");
+            if (isNaN(p) || p <= 0) {
+                setError(`Please enter a valid price for variation: ${combo}`);
+                setLoading(false);
+                return;
+            }
+            variationPricesObj[combo] = p;
         }
 
         const variationSalePricesObj: Record<string, number> = {};
-        for (const [combo, priceStr] of Object.entries(variantSalePrices)) {
-            const sp = parseFloat(priceStr);
+        for (const combo of expectedCombos) {
+            const priceStr = resolveValue(variantSalePrices, combo);
+            const sp = parseFloat(priceStr || "");
             if (!isNaN(sp) && sp > 0) variationSalePricesObj[combo] = sp;
         }
 

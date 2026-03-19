@@ -18,6 +18,7 @@ interface ProductActionsProps {
         variations?: Record<string, string[]>;
         variation_prices?: Record<string, number>;
         variation_sale_prices?: Record<string, number>;
+        variant_stocks?: Record<string, number>;
     }
 }
 
@@ -81,6 +82,30 @@ function resolveVariantPrices(
     };
 }
 
+/** Resolve the effective stock given the currently selected variations */
+function resolveStock(
+    baseStock: number,
+    selectedVariations: Record<string, string>,
+    variantStocks?: Record<string, number>,
+    allVariations?: Record<string, string[]>
+): number {
+    if (!variantStocks || Object.keys(variantStocks).length === 0) return baseStock;
+
+    if (allVariations) {
+        const selectedPairs = Object.entries(selectedVariations).map(([k, v]) => `${k}:${v}`);
+        if (selectedPairs.length === Object.keys(allVariations).length) {
+            // Completely selected, find the combo's stock
+            for (const [combo, stock] of Object.entries(variantStocks)) {
+                const comboPairs = combo.split(';').map(s => s.trim());
+                if (comboPairs.length === selectedPairs.length && selectedPairs.every(sp => comboPairs.includes(sp))) {
+                    return stock;
+                }
+            }
+        }
+    }
+    return baseStock;
+}
+
 export default function ProductActions({ product }: ProductActionsProps) {
     const { addItem } = useCart();
     const { toast } = useToast();
@@ -98,6 +123,13 @@ export default function ProductActions({ product }: ProductActionsProps) {
         product.variations
     );
     const priceChanged = originalPrice !== null || currentPrice !== product.price;
+
+    const currentStock = resolveStock(
+        product.stock,
+        selectedVariations,
+        product.variant_stocks,
+        product.variations
+    );
 
     const handleSelect = (key: string, value: string) => {
         setSelectedVariations(prev => ({ ...prev, [key]: value }));
@@ -207,13 +239,18 @@ export default function ProductActions({ product }: ProductActionsProps) {
                     </button>
                     <span className="w-12 text-center font-semibold text-slate-900 border-x border-slate-200">{quantity}</span>
                     <button
-                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                        onClick={() => setQuantity(Math.min(currentStock, quantity + 1))}
                         className="h-10 w-10 flex items-center justify-center text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"
-                        disabled={quantity >= product.stock}
+                        disabled={quantity >= currentStock}
                     >
                         <Plus className="h-4 w-4" />
                     </button>
                 </div>
+                {currentStock <= 0 ? (
+                    <span className="text-sm font-bold text-red-600 ml-4">Out of Stock</span>
+                ) : (
+                    <span className="text-sm text-slate-500 ml-4">{currentStock} available</span>
+                )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -221,17 +258,17 @@ export default function ProductActions({ product }: ProductActionsProps) {
                     size="lg"
                     className="w-full text-lg h-14 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200"
                     onClick={handleAddToCart}
-                    disabled={product.stock <= 0}
+                    disabled={currentStock <= 0}
                 >
                     <ShoppingCart className="mr-2 h-5 w-5" />
-                    {product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
+                    {currentStock <= 0 ? "Out of Stock" : "Add to Cart"}
                 </Button>
                 <Button
                     size="lg"
                     variant="outline"
                     className="w-full text-lg h-14 border-slate-300"
                     onClick={handleBuyNow}
-                    disabled={product.stock <= 0}
+                    disabled={currentStock <= 0}
                 >
                     <Bolt className="mr-2 h-5 w-5" />
                     Buy Now

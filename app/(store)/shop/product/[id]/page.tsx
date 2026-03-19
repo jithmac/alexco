@@ -37,12 +37,20 @@ async function getProduct(id: string) {
         const variation_sale_prices = data(row.variation_sale_prices);
         const gallery = data(row.gallery);
 
-        // Inventory check
         const inventory = await query(`
         SELECT SUM(delta) as stock FROM inventory_ledger WHERE product_id = ?
     `, [id]) as any[];
 
         const stock = Number(inventory[0]?.stock || 0);
+
+        const variantInventory = await query(`
+        SELECT variant_id, SUM(delta) as stock FROM inventory_ledger WHERE product_id = ? AND variant_id IS NOT NULL GROUP BY variant_id
+    `, [id]) as any[];
+
+        const variant_stocks: Record<string, number> = {};
+        for(const r of variantInventory) {
+            variant_stocks[r.variant_id] = Number(r.stock);
+        }
 
         // Construct images array: Gallery > Image > Empty
         let images: string[] = [];
@@ -69,6 +77,7 @@ async function getProduct(id: string) {
             variations,
             variation_prices,
             variation_sale_prices,
+            variant_stocks,
             warranty_period: row.warranty_period,
             warranty_policy: row.warranty_policy,
             video_url: row.video_url,
@@ -178,7 +187,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         stock: product.stock,
                         variations: product.variations,
                         variation_prices: product.variation_prices,
-                        variation_sale_prices: product.variation_sale_prices
+                        variation_sale_prices: product.variation_sale_prices,
+                        variant_stocks: product.variant_stocks
                     }} />
 
                     {/* Quick Benefits */}

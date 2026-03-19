@@ -174,16 +174,26 @@ export default function AddProductDialog({ open, onOpenChange, onSuccess }: AddP
         const variationSalePricesObj: Record<string, number> = {};
         const variantStocksObj: Record<string, number> = {};
 
-        combinations.forEach(combo => {
+        for (const combo of combinations) {
             const p = parseFloat(variantPrices[combo] || "");
-            if (!isNaN(p) && p > 0) variationPricesObj[combo] = p;
+            if (isNaN(p) || p <= 0) {
+                setError(`Please enter a valid price for variation: ${combo}`);
+                setLoading(false);
+                return;
+            }
+            variationPricesObj[combo] = p;
 
             const sp = parseFloat(variantSalePrices[combo] || "");
             if (!isNaN(sp) && sp > 0) variationSalePricesObj[combo] = sp;
 
-            const s = parseInt(variantStocks[combo] || "0");
-            if (!isNaN(s) && s > 0) variantStocksObj[combo] = s;
-        });
+            const s = parseInt(variantStocks[combo] || "");
+            if (isNaN(s) || s < 0) {
+                setError(`Please enter a valid initial stock for variation: ${combo}`);
+                setLoading(false);
+                return;
+            }
+            variantStocksObj[combo] = s;
+        }
 
         const specsObj = specs.reduce((acc, curr) => {
             if (curr.key && curr.value) acc[curr.key] = curr.value;
@@ -442,12 +452,12 @@ export default function AddProductDialog({ open, onOpenChange, onSuccess }: AddP
                                         </tbody>
                                     </table>
                                 </div>
-                                <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 flex items-start gap-3">
-                                    <div className="bg-blue-600 text-white rounded-full p-1 mt-0.5">
+                                <div className="bg-amber-50 p-4 rounded-lg border border-amber-100 flex items-start gap-3">
+                                    <div className="bg-amber-500 text-white rounded-full p-1 mt-0.5">
                                         <Plus className="h-3 w-3" />
                                     </div>
-                                    <p className="text-xs text-blue-800 leading-relaxed">
-                                        <strong>Tip:</strong> If an option's price is left blank, the product's base price (LKR {basicInfo.price || '0'}) will be used by default.
+                                    <p className="text-xs text-amber-900 leading-relaxed">
+                                        <strong>Note:</strong> Price and Initial Stock are mandatory for all variations.
                                     </p>
                                 </div>
                             </div>
