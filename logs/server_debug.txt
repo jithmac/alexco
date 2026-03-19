@@ -1,0 +1,21 @@
+alexco.lk
+cangaholdings.com
+dodgerblue-mallard-333627.hostingersite.com
+kawili.lk
+linkcorelk.com
+mediumslateblue-chimpanzee-606025.hostingersite.com
+salmon-swan-286530.hostingersite.com
+sithproduction.com
+solar.alexco.lk
+---
+---
+/home/u624100610/domains/mediumslateblue-chimpanzee-606025.hostingersite.com/public_html/package.json
+/home/u624100610/domains/mediumslateblue-chimpanzee-606025.hostingersite.com/public_html/.next/package.json
+/home/u624100610/domains/linkcorelk.com/public_html/logo-craft-web/package.json
+---
+bash: line 1: node: command not found
+---
+bash: line 1: pm2: command not found
+---
+u624100+ 2797724  0.0  0.0 222532  3636 ?        Ss   06:22   0:00 bash -c ls ~/domains/ > /tmp/debug1.txt; echo '---' >> /tmp/debug1.txt; find ~/domains/ -maxdepth 4 -name 'next.config*' >> /tmp/debug1.txt 2>/dev/null; echo '---' >> /tmp/debug1.txt; find ~/domains/ -maxdepth 4 -name 'package.json' >> /tmp/debug1.txt 2>/dev/null; echo '---' >> /tmp/debug1.txt; node -v >> /tmp/debug1.txt 2>&1; echo '---' >> /tmp/debug1.txt; pm2 list >> /tmp/debug1.txt 2>&1; echo '---' >> /tmp/debug1.txt; ps aux 2>/dev/null | grep node >> /tmp/debug1.txt; cat /tmp/debug1.txt
+u624100+ 2797775  0.0  0.0 221672  2556 ?        S    06:22   0:00 grep node

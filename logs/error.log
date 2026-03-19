@@ -1,0 +1,180 @@
+
+[2026-02-07T06:10:56.819Z] Create Product Error:
+Error: Unknown column 'image' in 'field list'
+    at PromisePool.execute (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_mysql2_7fafb016._.js:11690:26)
+    at query (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:89:39)
+    at createProduct (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:593:134)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeActionAndPrepareForRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:3803)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:1109
+    at async handleAction (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:34:23616)
+    at async renderToHTMLOrFlightImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:41:42130)
+    at async doRender (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:2991:28)
+    at async AppPageRouteModule.handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:43:64241)
+    at async handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3197:32)
+    at async Module.handler (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3568:20)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1442:9)
+    at async DevServer.renderPageComponent (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1494:24)
+    at async DevServer.renderToResponseImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1544:32)
+    at async DevServer.pipeImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1038:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\next-server.js:395:17)
+    at async DevServer.handleRequestImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:929:17)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:387:20
+    at async Span.traceAsyncFn (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:383:24)
+    at async invokeRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:248:21)
+    at async handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:447:24)
+    at async requestHandlerImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:496:13)
+    at async Server.requestListener (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+{
+  "message": "Unknown column 'image' in 'field list'",
+  "code": "ER_BAD_FIELD_ERROR",
+  "errno": 1054,
+  "sql": "\n            INSERT INTO products (\n                id, sku, name, category_path, price_retail, price_cost, price_sale, tax_code, \n                description, long_description, variations, specifications, whats_included, features, gallery, image, weight_g\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, 'VAT_18', ?, ?, ?, ?, ?, ?, ?, ?, ?)\n        ",
+  "sqlState": "42S22",
+  "sqlMessage": "Unknown column 'image' in 'field list'"
+}
+
+[2026-02-07T06:10:57.640Z] Create Product Error:
+Error: Unknown column 'image' in 'field list'
+    at PromisePool.execute (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_mysql2_7fafb016._.js:11690:26)
+    at query (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:89:39)
+    at createProduct (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:593:134)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeActionAndPrepareForRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:3803)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:1109
+    at async handleAction (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:34:23616)
+    at async renderToHTMLOrFlightImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:41:42130)
+    at async doRender (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:2991:28)
+    at async AppPageRouteModule.handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:43:64241)
+    at async handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3197:32)
+    at async Module.handler (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3568:20)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1442:9)
+    at async DevServer.renderPageComponent (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1494:24)
+    at async DevServer.renderToResponseImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1544:32)
+    at async DevServer.pipeImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1038:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\next-server.js:395:17)
+    at async DevServer.handleRequestImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:929:17)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:387:20
+    at async Span.traceAsyncFn (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:383:24)
+    at async invokeRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:248:21)
+    at async handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:447:24)
+    at async requestHandlerImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:496:13)
+    at async Server.requestListener (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+{
+  "message": "Unknown column 'image' in 'field list'",
+  "code": "ER_BAD_FIELD_ERROR",
+  "errno": 1054,
+  "sql": "\n            INSERT INTO products (\n                id, sku, name, category_path, price_retail, price_cost, price_sale, tax_code, \n                description, long_description, variations, specifications, whats_included, features, gallery, image, weight_g\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, 'VAT_18', ?, ?, ?, ?, ?, ?, ?, ?, ?)\n        ",
+  "sqlState": "42S22",
+  "sqlMessage": "Unknown column 'image' in 'field list'"
+}
+
+[2026-02-07T06:11:00.132Z] Create Product Error:
+Error: Unknown column 'image' in 'field list'
+    at PromisePool.execute (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_mysql2_7fafb016._.js:11690:26)
+    at query (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:89:39)
+    at createProduct (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:593:134)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeActionAndPrepareForRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:3803)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:1109
+    at async handleAction (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:34:23616)
+    at async renderToHTMLOrFlightImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:41:42130)
+    at async doRender (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:2991:28)
+    at async AppPageRouteModule.handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:43:64241)
+    at async handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3197:32)
+    at async Module.handler (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3568:20)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1442:9)
+    at async DevServer.renderPageComponent (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1494:24)
+    at async DevServer.renderToResponseImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1544:32)
+    at async DevServer.pipeImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1038:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\next-server.js:395:17)
+    at async DevServer.handleRequestImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:929:17)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:387:20
+    at async Span.traceAsyncFn (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:383:24)
+    at async invokeRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:248:21)
+    at async handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:447:24)
+    at async requestHandlerImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:496:13)
+    at async Server.requestListener (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+{
+  "message": "Unknown column 'image' in 'field list'",
+  "code": "ER_BAD_FIELD_ERROR",
+  "errno": 1054,
+  "sql": "\n            INSERT INTO products (\n                id, sku, name, category_path, price_retail, price_cost, price_sale, tax_code, \n                description, long_description, variations, specifications, whats_included, features, gallery, image, weight_g\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, 'VAT_18', ?, ?, ?, ?, ?, ?, ?, ?, ?)\n        ",
+  "sqlState": "42S22",
+  "sqlMessage": "Unknown column 'image' in 'field list'"
+}
+
+[2026-02-07T06:11:33.327Z] Create Product Error:
+Error: Unknown column 'image' in 'field list'
+    at PromisePool.execute (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_mysql2_7fafb016._.js:11690:26)
+    at query (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:89:39)
+    at createProduct (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:593:134)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeActionAndPrepareForRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:3803)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:1109
+    at async handleAction (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:34:23616)
+    at async renderToHTMLOrFlightImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:41:42130)
+    at async doRender (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:2991:28)
+    at async AppPageRouteModule.handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:43:64241)
+    at async handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3197:32)
+    at async Module.handler (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3568:20)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1442:9)
+    at async DevServer.renderPageComponent (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1494:24)
+    at async DevServer.renderToResponseImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1544:32)
+    at async DevServer.pipeImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1038:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\next-server.js:395:17)
+    at async DevServer.handleRequestImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:929:17)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:387:20
+    at async Span.traceAsyncFn (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:383:24)
+    at async invokeRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:248:21)
+    at async handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:447:24)
+    at async requestHandlerImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:496:13)
+    at async Server.requestListener (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+{
+  "message": "Unknown column 'image' in 'field list'",
+  "code": "ER_BAD_FIELD_ERROR",
+  "errno": 1054,
+  "sql": "\n            INSERT INTO products (\n                id, sku, name, category_path, price_retail, price_cost, price_sale, tax_code, \n                description, long_description, variations, specifications, whats_included, features, gallery, image, weight_g\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, 'VAT_18', ?, ?, ?, ?, ?, ?, ?, ?, ?)\n        ",
+  "sqlState": "42S22",
+  "sqlMessage": "Unknown column 'image' in 'field list'"
+}
+
+[2026-02-07T06:12:09.523Z] Create Product Error:
+Error: Unknown column 'image' in 'field list'
+    at PromisePool.execute (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_mysql2_7fafb016._.js:11690:26)
+    at query (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:89:39)
+    at createProduct (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\[root-of-the-server]__87af6e76._.js:593:134)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async executeActionAndPrepareForRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:3803)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:36:1109
+    at async handleAction (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:34:23616)
+    at async renderToHTMLOrFlightImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:41:42130)
+    at async doRender (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:2991:28)
+    at async AppPageRouteModule.handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:43:64241)
+    at async handleResponse (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3197:32)
+    at async Module.handler (E:\Business\Websites\Orders\Alexco\alexco-platform\.next\dev\server\chunks\ssr\node_modules_next_dist_aefa8b16._.js:3568:20)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1442:9)
+    at async DevServer.renderPageComponent (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1494:24)
+    at async DevServer.renderToResponseImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1544:32)
+    at async DevServer.pipeImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:1038:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\next-server.js:395:17)
+    at async DevServer.handleRequestImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\base-server.js:929:17)
+    at async E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:387:20
+    at async Span.traceAsyncFn (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\dev\next-dev-server.js:383:24)
+    at async invokeRender (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:248:21)
+    at async handleRequest (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:447:24)
+    at async requestHandlerImpl (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\router-server.js:496:13)
+    at async Server.requestListener (E:\Business\Websites\Orders\Alexco\alexco-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+{
+  "message": "Unknown column 'image' in 'field list'",
+  "code": "ER_BAD_FIELD_ERROR",
+  "errno": 1054,
+  "sql": "\n            INSERT INTO products (\n                id, sku, name, category_path, price_retail, price_cost, price_sale, tax_code, \n                description, long_description, variations, specifications, whats_included, features, gallery, image, weight_g\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, 'VAT_18', ?, ?, ?, ?, ?, ?, ?, ?, ?)\n        ",
+  "sqlState": "42S22",
+  "sqlMessage": "Unknown column 'image' in 'field list'"
+}

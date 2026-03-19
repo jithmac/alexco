@@ -1,0 +1,21 @@
+--- USER DEBUG ---
+1. Describing users table:
+[
+  "id",
+  "username",
+  "password_hash",
+  "full_name",
+  "email",
+  "role",
+  "is_active",
+  "created_at",
+  "created_by",
+  "last_login",
+  "employee_id"
+]
+
+2. Attempting Insert WITH employee_id
+✅ Insert WITH employee_id passed
+
+3. Attempting Insert WITHOUT employee_id
+✅ Insert WITHOUT employee_id passed

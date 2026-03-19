@@ -1,0 +1,50 @@
+﻿[dotenv@17.2.3] injecting env (0) from .env.local -- tip: ≡ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+--- Categories ---
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé (index) Γöé id                                     Γöé name                 Γöé slug                 Γöé parent_id        Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0       Γöé '87a7e538-2916-4c73-a2c1-9aea7fda1afb' Γöé 'Android'            Γöé 'android'            Γöé 'cat-mobile'     Γöé
+Γöé 1       Γöé 'cat-computers'                        Γöé 'Computers'          Γöé 'computers'          Γöé null             Γöé
+Γöé 2       Γöé 'cat-electrical'                       Γöé 'Electrical'         Γöé 'electrical'         Γöé null             Γöé
+Γöé 3       Γöé 'cat-mobile'                           Γöé 'Mobile & Gadgets'   Γöé 'mobile'             Γöé null             Γöé
+Γöé 4       Γöé 'cat-solar'                            Γöé 'Solar & Power'      Γöé 'solar-power'        Γöé null             Γöé
+Γöé 5       Γöé 'sub-batteries'                        Γöé 'Batteries'          Γöé 'batteries'          Γöé 'cat-solar'      Γöé
+Γöé 6       Γöé 'sub-inverters'                        Γöé 'Inverters'          Γöé 'inverters'          Γöé 'cat-solar'      Γöé
+Γöé 7       Γöé 'sub-lighting'                         Γöé 'Lighting'           Γöé 'lighting'           Γöé 'cat-electrical' Γöé
+Γöé 8       Γöé 'sub-protection'                       Γöé 'Protection Devices' Γöé 'protection-devices' Γöé 'cat-electrical' Γöé
+Γöé 9       Γöé 'sub-solar-access'                     Γöé 'Accessories'        Γöé 'solar-accessories'  Γöé 'cat-solar'      Γöé
+Γöé 10      Γöé 'sub-solar-panels'                     Γöé 'Solar Panels'       Γöé 'solar-panels'       Γöé 'cat-solar'      Γöé
+Γöé 11      Γöé 'sub-switches'                         Γöé 'Switches & Sockets' Γöé 'switches-sockets'   Γöé 'cat-electrical' Γöé
+Γöé 12      Γöé 'sub-wiring'                           Γöé 'Wiring & Cables'    Γöé 'wiring-cables'      Γöé 'cat-electrical' Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+
+--- Products (Sample) ---
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé (index) Γöé id                                     Γöé name                         Γöé category_path                   Γöé
+Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö╝ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+Γöé 0       Γöé '05acb67e-859c-47fe-8d1c-237470836a38' Γöé 'MC4 Connector Pair'         Γöé 'solar-power/solar-accessories' Γöé
+Γöé 1       Γöé '0f79ef0b-e7cf-4d2d-ae06-a6da2ca9cd9e' Γöé 'test productw'              Γöé 'solar'                         Γöé
+Γöé 2       Γöé '15c15df8-e8c8-42ee-84f9-4b43581bd222' Γöé 'Jinko Solar Tiger Neo 450W' Γöé 'Solar/Panels'                  Γöé
+Γöé 3       Γöé '278266f1-7154-441d-82aa-cc9614ca774e' Γöé 'DC Breaker 20A 500V'        Γöé 'electrical'                    Γöé
+Γöé 4       Γöé '38f54d02-9b4c-4ebd-ae29-d9eb62bd269c' Γöé 'PV Cable 4mm (Black)'       Γöé 'Electrical/Cables'             Γöé
+Γöé 5       Γöé '3b377154-0e95-4eb5-988c-8705c589fab0' Γöé 'JA Solar DeepBlue 3.0 545W' Γöé 'Solar/Panels'                  Γöé
+Γöé 6       Γöé '4665a19b-afba-45f0-9232-28ba09e252b7' Γöé 'PV Cable 4mm (Red)'         Γöé 'Electrical/Cables'             Γöé
+Γöé 7       Γöé '4df63c99-77c3-4abe-b5a5-d47c1c02f6d0' Γöé 'Tuya Smart Plug 13A'        Γöé 'Smart Home/Plugs'              Γöé
+Γöé 8       Γöé '55c5b9a4-1803-44c2-a429-6be146065088' Γöé 'Solar Installation (5kW)'   Γöé 'Services/Labor'                Γöé
+Γöé 9       Γöé '5b1b2ea3-0b4a-4e6e-982d-b2a62f5e473e' Γöé 'test product 1'             Γöé 'electrical'                    Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+
+--- Test Queries ---
+Category: Android (android) -> Count: 1
+Category: Computers (computers) -> Count: 0
+Category: Electrical (electrical) -> Count: 6
+Category: Mobile & Gadgets (mobile) -> Count: 1
+Category: Solar & Power (solar-power) -> Count: 10
+Category: Batteries (batteries) -> Count: 3
+Category: Inverters (inverters) -> Count: 5
+Category: Lighting (lighting) -> Count: 1
+Category: Protection Devices (protection-devices) -> Count: 0
+Category: Accessories (solar-accessories) -> Count: 1
+Category: Solar Panels (solar-panels) -> Count: 1
+Category: Switches & Sockets (switches-sockets) -> Count: 0
+Category: Wiring & Cables (wiring-cables) -> Count: 0

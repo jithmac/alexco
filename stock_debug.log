@@ -1,0 +1,30 @@
+[2026-02-10T13:09:07.712Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=5, Variant=color:red; Length:2
+[2026-02-10T13:09:07.760Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:09:07.766Z] Insert Successful
+[2026-02-10T13:09:08.235Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=6, Variant=color:red; Length:4
+[2026-02-10T13:09:08.252Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:09:08.262Z] Insert Successful
+[2026-02-10T13:09:10.643Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=7, Variant=color:red; Length:5
+[2026-02-10T13:09:10.655Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:09:10.660Z] Insert Successful
+[2026-02-10T13:09:11.720Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=8, Variant=color:red; Length:8
+[2026-02-10T13:09:11.734Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:09:11.739Z] Insert Successful
+[2026-02-10T13:09:20.832Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=45, Variant=color:blue; Length:5
+[2026-02-10T13:09:20.843Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:09:20.853Z] Insert Successful
+[2026-02-10T13:09:34.083Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=2, Variant=color:green; Length:5
+[2026-02-10T13:09:34.089Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:09:34.096Z] Insert Successful
+[2026-02-10T13:12:05.534Z] adjustStock called: Product=88e1f8f7-a7fa-4685-b59f-96f0df4f76d3, Delta=-45, Variant=color:blue; Length:5
+[2026-02-10T13:12:05.554Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:12:05.561Z] Insert Successful
+[2026-02-10T13:12:45.816Z] adjustStock called: Product=8fbf6376-8569-45fc-8bd5-c0a6b09d41cc, Delta=1, Variant=color:red; Length:4
+[2026-02-10T13:12:45.834Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:12:45.840Z] Insert Successful
+[2026-02-10T13:12:46.606Z] adjustStock called: Product=8fbf6376-8569-45fc-8bd5-c0a6b09d41cc, Delta=2, Variant=color:red; Length:5
+[2026-02-10T13:12:46.647Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:12:46.662Z] Insert Successful
+[2026-02-10T13:12:47.518Z] adjustStock called: Product=8fbf6376-8569-45fc-8bd5-c0a6b09d41cc, Delta=3, Variant=color:red; Length:8
+[2026-02-10T13:12:47.524Z] Using Location: d1c1cfd5-eec0-4d72-8961-04b0d154ef59
+[2026-02-10T13:12:47.534Z] Insert Successful
