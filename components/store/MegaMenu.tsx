@@ -83,81 +83,85 @@ export default function MegaMenu() {
                 )}
 
                 {/* Scrollable nav strip */}
-                <NavigationMenu className="max-w-none justify-start w-full">
-                    <NavigationMenuList
-                        ref={scrollRef as any}
-                        className="flex-nowrap overflow-x-auto scrollbar-hide w-full justify-start"
-                        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                    >
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild>
-                                <Link
-                                    href="/shop"
-                                    className="group inline-flex h-12 w-max items-center justify-center rounded-none px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-50 focus:bg-slate-50 focus:outline-none text-slate-600 whitespace-nowrap"
-                                >
-                                    All Products
-                                </Link>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-                        {categories.map((category) => {
-                            const Icon = getIcon(category.slug);
-                            return (
-                                <NavigationMenuItem key={category.id}>
-                                    <NavigationMenuTrigger className="bg-transparent hover:bg-slate-50 text-slate-600 font-medium h-12 rounded-none px-4 whitespace-nowrap">
-                                        {category.name}
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <div className="grid w-[600px] gap-3 p-4 md:w-[600px] md:grid-cols-2 lg:w-[800px] bg-white">
-                                            <div className="row-span-3">
-                                                <Link
-                                                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-slate-100 to-slate-200 p-6 no-underline outline-none focus:shadow-md"
-                                                    href={`/shop?category=${category.slug}`}
-                                                >
-                                                    {category.image ? (
-                                                        <div className="relative h-12 w-12 rounded-md overflow-hidden mb-3 border border-slate-100">
-                                                            <img
-                                                                src={category.image}
-                                                                alt={category.name}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                    ) : (
-                                                        <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center text-white mb-2">
-                                                            <Icon className="h-4 w-4" />
-                                                        </div>
-                                                    )}
-                                                    <div className="mb-2 mt-2 text-lg font-medium text-slate-900">
-                                                        {category.name}
-                                                    </div>
-                                                    <p className="text-sm leading-tight text-slate-600">
-                                                        {category.description || `Explore our wide range of ${category.name.toLowerCase()} products.`}
-                                                    </p>
-                                                </Link>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {category.children && category.children.map((sub) => (
+                <div
+                    ref={scrollRef as any}
+                    className="relative w-full overflow-x-auto overflow-y-hidden scrollbar-hide flex-nowrap flex items-center"
+                    style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+                >
+                    <NavigationMenu className="max-w-none justify-start w-max">
+                        <NavigationMenuList
+                            className="flex-nowrap w-max justify-start items-center"
+                        >
+                            <NavigationMenuItem className="shrink-0 flex-none">
+                                <NavigationMenuLink asChild>
+                                    <Link
+                                        href="/shop"
+                                        className="group inline-flex h-12 w-max items-center justify-center rounded-none px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-50 focus:bg-slate-50 focus:outline-none text-slate-600 whitespace-nowrap"
+                                    >
+                                        All Products
+                                    </Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                            {categories.map((category) => {
+                                const Icon = getIcon(category.slug);
+                                return (
+                                    <NavigationMenuItem key={category.id} className="shrink-0 flex-none">
+                                        <NavigationMenuTrigger className="bg-transparent hover:bg-slate-50 text-slate-600 font-medium h-12 rounded-none px-4 whitespace-nowrap">
+                                            {category.name}
+                                        </NavigationMenuTrigger>
+                                        <NavigationMenuContent>
+                                            <div className="grid w-[600px] gap-3 p-4 md:w-[600px] md:grid-cols-2 lg:w-[800px] bg-white">
+                                                <div className="row-span-3">
                                                     <Link
-                                                        key={sub.id}
-                                                        href={`/shop?category=${sub.slug}`}
-                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-100 focus:bg-slate-100"
+                                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-slate-100 to-slate-200 p-6 no-underline outline-none focus:shadow-md"
+                                                        href={`/shop?category=${category.slug}`}
                                                     >
-                                                        <div className="text-sm font-medium leading-none text-slate-900">{sub.name}</div>
+                                                        {category.image ? (
+                                                            <div className="relative h-12 w-12 rounded-md overflow-hidden mb-3 border border-slate-100">
+                                                                <img
+                                                                    src={category.image}
+                                                                    alt={category.name}
+                                                                    className="w-full h-full object-cover"
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center text-white mb-2">
+                                                                <Icon className="h-4 w-4" />
+                                                            </div>
+                                                        )}
+                                                        <div className="mb-2 mt-2 text-lg font-medium text-slate-900">
+                                                            {category.name}
+                                                        </div>
+                                                        <p className="text-sm leading-tight text-slate-600">
+                                                            {category.description || `Explore our wide range of ${category.name.toLowerCase()} products.`}
+                                                        </p>
                                                     </Link>
-                                                ))}
-                                                <Link
-                                                    href={`/shop?category=${category.slug}`}
-                                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 focus:bg-blue-50 mt-2 col-span-2"
-                                                >
-                                                    <div className="text-sm font-medium leading-none text-blue-600">View All {category.name} →</div>
-                                                </Link>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    {category.children && category.children.map((sub) => (
+                                                        <Link
+                                                            key={sub.id}
+                                                            href={`/shop?category=${sub.slug}`}
+                                                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-100 focus:bg-slate-100"
+                                                        >
+                                                            <div className="text-sm font-medium leading-none text-slate-900">{sub.name}</div>
+                                                        </Link>
+                                                    ))}
+                                                    <Link
+                                                        href={`/shop?category=${category.slug}`}
+                                                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 focus:bg-blue-50 mt-2 col-span-2"
+                                                    >
+                                                        <div className="text-sm font-medium leading-none text-blue-600">View All {category.name} →</div>
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-                            );
-                        })}
-                    </NavigationMenuList>
-                </NavigationMenu>
+                                        </NavigationMenuContent>
+                                    </NavigationMenuItem>
+                                );
+                            })}
+                        </NavigationMenuList>
+                    </NavigationMenu>
+                </div>
 
                 {/* Right fade + scroll button */}
                 {canScrollRight && (
