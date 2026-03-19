@@ -129,6 +129,14 @@ export default function VariationStockManager({
         setSaving(null);
     };
 
+    const resolveValue = (obj: Record<string, any>, rawCombo: string) => {
+        if (!obj) return undefined;
+        if (obj[rawCombo] !== undefined) return obj[rawCombo];
+        const normalizedCombo = rawCombo.replace(/\s/g, '');
+        const matchedKey = Object.keys(obj).find(k => k.replace(/\s/g, '') === normalizedCombo);
+        return matchedKey ? obj[matchedKey] : undefined;
+    };
+
     if (!variants.length) return null;
 
     return (
@@ -161,7 +169,7 @@ export default function VariationStockManager({
                                         type="number"
                                         placeholder={basePrice}
                                         className="h-8 text-right font-mono"
-                                        value={prices[v] || ""}
+                                        value={resolveValue(prices, v) || ""}
                                         onChange={(e) => onPriceChange?.(v, e.target.value)}
                                     />
                                 </TableCell>
@@ -170,12 +178,12 @@ export default function VariationStockManager({
                                         type="number"
                                         placeholder="Sale Price"
                                         className="h-8 text-right font-mono"
-                                        value={salePrices[v] || ""}
+                                        value={resolveValue(salePrices, v) || ""}
                                         onChange={(e) => onSalePriceChange?.(v, e.target.value)}
                                     />
                                 </TableCell>
                                 <TableCell className="text-right font-mono">
-                                    {stockLevels[v] || 0}
+                                    {resolveValue(stockLevels, v) || 0}
                                 </TableCell>
                                 <TableCell>
                                     <Input

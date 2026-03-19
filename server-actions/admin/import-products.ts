@@ -47,9 +47,9 @@ export async function importProducts(products: ProductImportData[]) {
 
     // Helper to build full path for a category
     const buildPath = (cat: any): string => {
-        if (!cat.parent_id) return cat.name;
+        if (!cat.parent_id) return cat.name.trim();
         const parent = categories.find(c => c.id === cat.parent_id);
-        return parent ? `${buildPath(parent)} > ${cat.name}` : cat.name;
+        return parent ? `${buildPath(parent)} > ${cat.name.trim()}` : cat.name.trim();
     };
 
     categories.forEach(c => {
@@ -57,13 +57,13 @@ export async function importProducts(products: ProductImportData[]) {
         categoryIdMap.set(c.id, c.slug);
 
         // 2. Map Name -> Slug (for simple matches)
-        categoryMap.set(c.name.toLowerCase(), c.slug);
+        categoryMap.set(c.name.toLowerCase().trim(), c.slug);
 
         // 3. Map Slug -> Slug
-        categoryMap.set(c.slug.toLowerCase(), c.slug);
+        categoryMap.set(c.slug.toLowerCase().trim(), c.slug);
 
         // 4. Map Full Path -> Slug (e.g. "Electrical > Lighting")
-        const fullPath = buildPath(c).toLowerCase();
+        const fullPath = buildPath(c).toLowerCase().replace(/\s+>\s+/g, ' > ');
         categoryPathMap.set(fullPath, c.slug);
     });
 
@@ -76,7 +76,7 @@ export async function importProducts(products: ProductImportData[]) {
             }
 
             // Category Matching
-            const normalizedCat = p.category.toLowerCase().trim();
+            const normalizedCat = p.category.toLowerCase().trim().replace(/\s+>\s+/g, ' > ');
             let categorySlug =
                 categoryIdMap.get(p.category) ||
                 categoryPathMap.get(normalizedCat) ||
