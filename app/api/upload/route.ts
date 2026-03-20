@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         const uniqueFilename = `${uniqueSuffix}-${filename}`;
 
         // Ensure directory exists
-        const uploadDir = path.join(process.cwd(), "public/uploads/products");
+        const uploadDir = path.join(process.cwd(), "storage/uploads/products");
         await mkdir(uploadDir, { recursive: true });
 
         // Write file

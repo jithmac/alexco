@@ -4,10 +4,10 @@ const path = require('path');
 require('dotenv').config({ path: '.env.local' });
 
 const UPLOAD_DIRS = [
-    "public/uploads/products",
-    "public/uploads/hr",
-    "public/uploads/expenses",
-    "public/uploads/applicants"
+    "storage/uploads/products",
+    "storage/uploads/hr",
+    "storage/uploads/expenses",
+    "storage/uploads/applicants"
 ];
 
 const DB_IMAGE_REFERENCES = [
@@ -63,7 +63,7 @@ async function getFilesRecursively(dir) {
             if (s.isDirectory()) {
                 files.push(...await getFilesRecursively(fullPath));
             } else {
-                const relPath = path.relative(path.join(process.cwd(), 'public'), fullPath).replace(/\\/g, '/');
+                const relPath = path.relative(path.join(process.cwd(), 'storage'), fullPath).replace(/\\/g, '/');
                 files.push('/' + relPath);
             }
         }
@@ -100,7 +100,7 @@ async function cleanup(dryRun = true) {
 
         for (const fileUrl of existingFiles) {
             if (!referencedFiles.has(fileUrl)) {
-                const fullPath = path.join(process.cwd(), 'public', fileUrl);
+                const fullPath = path.join(process.cwd(), 'storage', fileUrl);
                 try {
                     const s = await fs.stat(fullPath);
                     totalSize += s.size;

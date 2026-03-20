@@ -11,7 +11,7 @@ export async function deleteUploadedFile(url: string | null | undefined) {
     }
 
     try {
-        const filePath = path.join(process.cwd(), 'public', url);
+        const filePath = path.join(process.cwd(), 'storage', url);
         await unlink(filePath);
         console.log(`Successfully deleted file: ${filePath}`);
     } catch (error: any) {

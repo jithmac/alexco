@@ -8,6 +8,7 @@ function getContentType(ext: string): string {
         '.png': 'image/png',
         '.jpg': 'image/jpeg',
         '.jpeg': 'image/jpeg',
+        '.jfif': 'image/jpeg',
         '.gif': 'image/gif',
         '.webp': 'image/webp',
         '.svg': 'image/svg+xml',
@@ -23,10 +24,10 @@ export async function GET(
 ) {
     try {
         const { path: pathSegments } = await params;
-        const filePath = path.join(process.cwd(), "public/uploads", ...pathSegments);
+        const filePath = path.join(process.cwd(), "storage/uploads", ...pathSegments);
 
-        // Security check: ensure path is within public/uploads
-        const uploadsDir = path.join(process.cwd(), "public/uploads");
+        // Security check: ensure path is within storage/uploads
+        const uploadsDir = path.join(process.cwd(), "storage/uploads");
         if (!filePath.startsWith(uploadsDir)) {
             return new NextResponse("Forbidden", { status: 403 });
         }
