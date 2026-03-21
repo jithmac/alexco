@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { readFile, stat } from "fs/promises";
 import path from "path";
 
+export const dynamic = 'force-dynamic';
+
 // Determine content type manually if mime is missing
 function getContentType(ext: string): string {
     const map: Record<string, string> = {
