@@ -11,7 +11,10 @@ export async function deleteUploadedFile(url: string | null | undefined) {
     }
 
     try {
-        const filePath = path.join(process.cwd(), 'storage', url);
+        const baseUploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "storage/uploads");
+        // url starts with /uploads, so remove it and any leading slash for safe path.join
+        const relativeUrl = url.replace(/^\/uploads\/?/, '');
+        const filePath = path.join(baseUploadDir, relativeUrl);
         await unlink(filePath);
         console.log(`Successfully deleted file: ${filePath}`);
     } catch (error: any) {

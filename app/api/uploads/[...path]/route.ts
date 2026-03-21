@@ -24,11 +24,11 @@ export async function GET(
 ) {
     try {
         const { path: pathSegments } = await params;
-        const filePath = path.join(process.cwd(), "storage/uploads", ...pathSegments);
+        const uploadsBaseDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "storage/uploads");
+        const filePath = path.join(uploadsBaseDir, ...pathSegments);
 
         // Security check: ensure path is within storage/uploads
-        const uploadsDir = path.join(process.cwd(), "storage/uploads");
-        if (!filePath.startsWith(uploadsDir)) {
+        if (!filePath.startsWith(uploadsBaseDir)) {
             return new NextResponse("Forbidden", { status: 403 });
         }
 
