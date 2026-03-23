@@ -2,7 +2,7 @@
 
 import { query } from "@/lib/db";
 import { requirePermission } from "@/lib/auth";
-import { getCategoryPath, getCategorySlug } from "./categories";
+import { getCategoryPath, getCategorySlug, getCategories } from "./categories";
 
 export type InventoryConflict = {
     productId: string;
@@ -74,7 +74,7 @@ export async function resolveConflict(productId: string, resolution: "BACKORDER"
 
 // --- New Features for Phase 5 Completion ---
 
-export async function getInventoryList(search?: string) {
+export async function getInventoryList(search?: string, categoryFilter?: string) {
     try {
         await requirePermission('inventory.view');
     } catch (e) {
@@ -94,10 +94,52 @@ export async function getInventoryList(search?: string) {
     `;
 
     const params: any[] = [];
+    let whereClauses: string[] = [];
 
     if (search) {
-        sql += ` WHERE p.name LIKE ? OR p.sku LIKE ? `;
+        whereClauses.push(`(p.name LIKE ? OR p.sku LIKE ?)`);
         params.push(`%${search}%`, `%${search}%`);
+    }
+
+    if (categoryFilter && categoryFilter !== 'all') {
+        const allCats = await getCategories(true);
+        const slugs: string[] = [];
+
+        const gatherDescendants = (node: any) => {
+            slugs.push(node.slug); // assuming category_path is the slug
+            if (node.children && Array.isArray(node.children)) {
+                node.children.forEach(gatherDescendants);
+            }
+        };
+
+        const findAndGather = (nodes: any[]) => {
+            for (const node of nodes) {
+                if (node.id === categoryFilter || node.slug === categoryFilter) {
+                    gatherDescendants(node);
+                    return true;
+                }
+                if (node.children && Array.isArray(node.children)) {
+                    if (findAndGather(node.children)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        findAndGather(allCats);
+
+        if (slugs.length === 0) {
+            slugs.push(categoryFilter);
+        }
+
+        const uniqueSlugs = [...new Set(slugs)];
+        whereClauses.push(`p.category_path IN (${uniqueSlugs.map(() => '?').join(',')})`);
+        params.push(...uniqueSlugs);
+    }
+
+    if (whereClauses.length > 0) {
+        sql += ` WHERE ` + whereClauses.join(' AND ');
     }
 
     sql += ` GROUP BY p.id ORDER BY p.name ASC LIMIT 50`;

@@ -7,8 +7,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Search, Plus, SlidersHorizontal, Trash2, Pencil, Upload } from "lucide-react";
+import { Search, Plus, SlidersHorizontal, Trash2, Pencil, Upload, Filter } from "lucide-react";
 import { getInventoryList, deleteProduct, toggleProductStatus } from "@/server-actions/admin/inventory";
+import { getCategories } from "@/server-actions/admin/categories";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AddProductDialog from "./AddProductDialog";
 import ImportProductDialog from "./ImportProductDialog";
 import EditProductDialog from "./EditProductDialog";
@@ -28,6 +30,8 @@ import { useToast } from "@/hooks/use-toast";
 export default function InventoryList() {
     const [products, setProducts] = useState<any[]>([]);
     const [search, setSearch] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState("all");
+    const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAddDialog, setShowAddDialog] = useState(false);
     const [showImportDialog, setShowImportDialog] = useState(false);
@@ -38,15 +42,29 @@ export default function InventoryList() {
 
     async function loadData() {
         setLoading(true);
-        const data = await getInventoryList(search);
+        const data = await getInventoryList(search, categoryFilter === 'all' ? undefined : categoryFilter);
         setProducts(data);
         setLoading(false);
     }
 
     useEffect(() => {
+        getCategories(true).then(cats => {
+            const flat: any[] = [];
+            const traverse = (items: any[]) => {
+                items.forEach(i => {
+                    flat.push(i);
+                    if (i.children) traverse(i.children);
+                });
+            };
+            traverse(cats);
+            setCategories(flat);
+        });
+    }, []);
+
+    useEffect(() => {
         const timeout = setTimeout(loadData, 300);
         return () => clearTimeout(timeout);
-    }, [search]);
+    }, [search, categoryFilter]);
 
     const handleSuccess = () => {
         loadData();
@@ -97,21 +115,40 @@ export default function InventoryList() {
     return (
         <div className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                <div className="relative w-full sm:w-72">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-slate-400" />
-                    <Input
-                        placeholder="Search products..."
-                        className="pl-8"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                <div className="flex flex-col sm:flex-row gap-4 flex-1">
+                    <div className="relative w-full sm:w-72">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-slate-400" />
+                        <Input
+                            placeholder="Search products..."
+                            className="pl-8"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-full sm:w-48">
+                        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="All Categories" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Categories</SelectItem>
+                                {categories.map(cat => (
+                                    <SelectItem key={cat.id} value={cat.slug || cat.id}>
+                                        {cat.parent_id ? `— ${cat.name}` : cat.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
-                <Button variant="outline" onClick={() => setShowImportDialog(true)}>
-                    <Upload className="h-4 w-4 mr-2" /> Import CSV
-                </Button>
-                <Button onClick={() => setShowAddDialog(true)}>
-                    <Plus className="h-4 w-4 mr-2" /> Add Product
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setShowImportDialog(true)}>
+                        <Upload className="h-4 w-4 mr-2" /> Import CSV
+                    </Button>
+                    <Button onClick={() => setShowAddDialog(true)}>
+                        <Plus className="h-4 w-4 mr-2" /> Add Product
+                    </Button>
+                </div>
             </div>
 
             <div className="border rounded-md">
