@@ -7,7 +7,8 @@ import OrderHistorySheet from "./OrderHistorySheet";
 import CartSidebar from "./CartSidebar";
 import POSReceipt from "./POSReceipt";
 import PrintPortal from "./PrintPortal";
-import { Trash2, Plus, Minus, ShoppingCart, Printer, History, Menu } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingCart, Printer, History, Menu, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createSalesOrder } from "@/server-actions/pos/orders";
 import { useToast } from "@/hooks/use-toast";
@@ -172,7 +173,12 @@ export default function POSInterface() {
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col min-w-0 h-full print:hidden">
                 <header className="bg-white border-b px-4 py-3 md:px-6 md:py-4 flex items-center justify-between shrink-0">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 md:gap-4">
+                        <Link href="/paths/admin">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-slate-800">
+                                <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
+                            </Button>
+                        </Link>
                         <h1 className="text-lg md:text-xl font-bold text-slate-800">POS Terminal</h1>
                         {lastOrderNumber && (
                             <Button

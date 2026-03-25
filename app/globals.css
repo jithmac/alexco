@@ -115,6 +115,10 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+#print-root {
+  display: none;
+}
+
 @media print {
 
   /* Hide everything deeply */

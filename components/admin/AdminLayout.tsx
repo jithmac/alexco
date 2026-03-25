@@ -179,10 +179,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         onLogout: handleLogout,
     };
 
+    const isPOS = pathname === '/paths/POS';
+
     return (
-        <div className="flex min-h-screen bg-slate-100">
+        <div className={cn("flex min-h-screen bg-slate-100", isPOS && "flex-col md:flex-row h-screen overflow-hidden")}>
             {/* Mobile backdrop */}
-            {sidebarOpen && (
+            {sidebarOpen && !isPOS && (
                 <div
                     className="fixed inset-0 z-40 bg-black/60 md:hidden"
                     onClick={() => setSidebarOpen(false)}
@@ -190,44 +192,50 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             )}
 
             {/* Mobile sidebar drawer */}
-            <aside
-                className={cn(
-                    "fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white flex flex-col transition-transform duration-300 md:hidden",
-                    sidebarOpen ? "translate-x-0" : "-translate-x-full"
-                )}
-            >
-                <button
-                    className="absolute top-4 right-4 text-slate-400 hover:text-white z-10"
-                    onClick={() => setSidebarOpen(false)}
-                    aria-label="Close menu"
+            {!isPOS && (
+                <aside
+                    className={cn(
+                        "fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white flex flex-col transition-transform duration-300 md:hidden",
+                        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+                    )}
                 >
-                    <X className="h-5 w-5" />
-                </button>
-                <SidebarNav {...sidebarProps} />
-            </aside>
+                    <button
+                        className="absolute top-4 right-4 text-slate-400 hover:text-white z-10"
+                        onClick={() => setSidebarOpen(false)}
+                        aria-label="Close menu"
+                    >
+                        <X className="h-5 w-5" />
+                    </button>
+                    <SidebarNav {...sidebarProps} />
+                </aside>
+            )}
 
             {/* Desktop sidebar */}
-            <aside className="w-64 bg-slate-900 text-white flex-shrink-0 flex-col hidden md:flex">
-                <SidebarNav {...sidebarProps} />
-            </aside>
+            {!isPOS && (
+                <aside className="w-64 bg-slate-900 text-white flex-shrink-0 flex-col hidden md:flex">
+                    <SidebarNav {...sidebarProps} />
+                </aside>
+            )}
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto min-w-0">
+            <main className={cn("flex-1 min-w-0", isPOS ? "flex flex-col h-full overflow-hidden" : "overflow-y-auto")}>
                 {/* Mobile topbar */}
-                <div className="md:hidden bg-slate-900 text-white px-4 py-3 flex items-center gap-3">
-                    <button
-                        onClick={() => setSidebarOpen(true)}
-                        aria-label="Open menu"
-                        className="text-white p-1 -ml-1"
-                    >
-                        <Menu className="h-6 w-6" />
-                    </button>
-                    <span className="font-bold flex-1">Alexco Admin</span>
-                    {user && (
-                        <span className="text-xs text-slate-400">{ROLE_LABELS[user.role]}</span>
-                    )}
-                </div>
-                <div className="p-4 md:p-8">
+                {!isPOS && (
+                    <div className="md:hidden bg-slate-900 text-white px-4 py-3 flex items-center gap-3 flex-shrink-0">
+                        <button
+                            onClick={() => setSidebarOpen(true)}
+                            aria-label="Open menu"
+                            className="text-white p-1 -ml-1"
+                        >
+                            <Menu className="h-6 w-6" />
+                        </button>
+                        <span className="font-bold flex-1">Alexco Admin</span>
+                        {user && (
+                            <span className="text-xs text-slate-400">{ROLE_LABELS[user.role]}</span>
+                        )}
+                    </div>
+                )}
+                <div className={cn(isPOS ? "flex-1 overflow-hidden p-0" : "p-4 md:p-8")}>
                     {children}
                 </div>
             </main>

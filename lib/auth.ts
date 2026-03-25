@@ -138,12 +138,17 @@ export async function getCurrentUser(): Promise<User | null> {
     }
 
     // Fetch Permissions
-    const permissions = roleId ? await query(`
-        SELECT p.code 
-        FROM role_permissions rp
-        JOIN permissions p ON rp.permission_id = p.id
-        WHERE rp.role_id = ?
-    `, [roleId]) as any[] : [];
+    let permissions: any[] = [];
+    if (roleSlug === 'super_user') {
+        permissions = await query(`SELECT code FROM permissions`) as any[];
+    } else if (roleId) {
+        permissions = await query(`
+            SELECT p.code 
+            FROM role_permissions rp
+            JOIN permissions p ON rp.permission_id = p.id
+            WHERE rp.role_id = ?
+        `, [roleId]) as any[];
+    }
 
     return {
         ...user,

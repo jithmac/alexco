@@ -16,6 +16,7 @@ export type ProductDoc = {
     category: string;
     sku: string;
     stock: number;
+    image?: string | null;
     variations?: Record<string, string[]>;
     variation_prices?: Record<string, number>;
     variation_sale_prices?: Record<string, number>;
@@ -31,7 +32,7 @@ export type OrderDoc = {
 
 // --- Schemas ---
 const productSchema: RxJsonSchema<ProductDoc> = {
-    version: 3,
+    version: 4,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -41,6 +42,7 @@ const productSchema: RxJsonSchema<ProductDoc> = {
         category: { type: 'string' },
         sku: { type: 'string' },
         stock: { type: 'number' },
+        image: { type: 'string' },
         variations: { type: 'object', additionalProperties: true },
         variation_prices: { type: 'object', additionalProperties: true },
         variation_sale_prices: { type: 'object', additionalProperties: true }
@@ -128,6 +130,12 @@ const _createDatabase = async (): Promise<MyDatabase> => {
                 3: function (oldDoc: any) {
                     oldDoc.variation_sale_prices = oldDoc.variation_sale_prices || {};
                     return oldDoc;
+                },
+                4: function (oldDoc: any) {
+                    if (oldDoc.image === undefined || oldDoc.image === null) {
+                        delete oldDoc.image;
+                    }
+                    return oldDoc;
                 }
             }
         },
@@ -162,11 +170,17 @@ export const syncProducts = async () => {
         // Bulk Upsert
         if (serverProducts.length > 0) {
             // Ensure variation_prices and variation_sale_prices are always objects
-            const safeProducts = serverProducts.map(p => ({
-                ...p,
-                variation_prices: p.variation_prices || {},
-                variation_sale_prices: p.variation_sale_prices || {}
-            }));
+            const safeProducts = serverProducts.map(p => {
+                const doc: any = {
+                    ...p,
+                    variation_prices: p.variation_prices || {},
+                    variation_sale_prices: p.variation_sale_prices || {}
+                };
+                if (!doc.image) {
+                    delete doc.image; // Keep schema clean from nulls if not strictly typed as multiple
+                }
+                return doc;
+            });
             await db.products.bulkUpsert(safeProducts);
             console.log(`Synced ${safeProducts.length} products`);
         }

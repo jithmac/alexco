@@ -15,6 +15,7 @@ interface Product {
     price: number;
     category: string;
     stock: number;
+    image?: string;
     variations?: Record<string, string[]>;
     variation_prices?: Record<string, number>;
     variation_sale_prices?: Record<string, number>;
@@ -80,6 +81,7 @@ export default function ProductGrid({ onAddToCart }: ProductGridProps) {
                                 price: d.price,
                                 category: d.category,
                                 sku: d.sku,
+                                image: d.image,
                                 variations: d.variations,
                                 variation_prices: d.variation_prices,
                                 variation_sale_prices: d.variation_sale_prices,
@@ -169,9 +171,21 @@ export default function ProductGrid({ onAddToCart }: ProductGridProps) {
                                         </div>
                                     )}
 
-                                    <div className="h-12 w-full bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-2xl font-bold text-slate-300 select-none">
-                                        {product.name.charAt(0)}
-                                    </div>
+                                    {/* Image or Placeholder */}
+                                    {product.image ? (
+                                        <div className="h-24 w-full mb-2 bg-slate-100 rounded-lg overflow-hidden shrink-0">
+                                            <img 
+                                                src={product.image} 
+                                                alt={product.name} 
+                                                className="object-cover w-full h-full"
+                                                loading="lazy" 
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="h-24 w-full bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-3xl font-bold text-slate-300 select-none shrink-0 uppercase">
+                                            {product.name.charAt(0)}
+                                        </div>
+                                    )}
                                     <div className="font-semibold text-slate-800 text-sm leading-tight mb-1">
                                         {product.name}
                                     </div>
