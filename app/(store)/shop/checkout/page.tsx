@@ -143,7 +143,19 @@ export default function CheckoutPage() {
             if (paymentMethod === 'payhere') {
                 // Initiate PayHere Payment
                 try {
-                    const { hash, merchantId, amountFormatted } = await generatePayHereHash(result.orderNumber!, finalTotal, "LKR");
+                    const hashResult = await generatePayHereHash(result.orderNumber!, finalTotal, "LKR");
+
+                    if (hashResult.error) {
+                        toast({
+                            title: "Payment Configuration Error",
+                            description: hashResult.error,
+                            variant: "destructive"
+                        });
+                        setLoading(false);
+                        return;
+                    }
+
+                    const { hash, merchantId, amountFormatted } = hashResult;
 
                     const payment = {
                         sandbox: process.env.NEXT_PUBLIC_PAYHERE_MODE === "sandbox",
