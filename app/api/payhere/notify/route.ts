@@ -28,8 +28,11 @@ export async function POST(req: NextRequest) {
             md5sig
         } = data;
 
-        const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET!;
-        const merchantId = process.env.PAYHERE_MERCHANT_ID!;
+        const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET!.trim();
+        const merchantId = process.env.PAYHERE_MERCHANT_ID!.trim();
+
+        console.log("\n--- PayHere Webhook Received ---");
+        console.log("Raw Data:", JSON.stringify(data, null, 2));
 
         // 1. Validate Merchant ID
         if (merchant_id !== merchantId) {
@@ -49,6 +52,19 @@ export async function POST(req: NextRequest) {
             .update(merchant_id + order_id + payhere_amount + payhere_currency + status_code + hashedSecret)
             .digest('hex')
             .toUpperCase();
+
+        console.log("Hash Verification Details:", {
+            expectedHash: md5sig,
+            generatedHash: localMd5Sig,
+            merchantId,
+            orderId: order_id,
+            amount: payhere_amount,
+            currency: payhere_currency,
+            statusCode: status_code,
+            secretLength: merchantSecret.length,
+            hashedSecret,
+            hashStringPreEncrypt: merchant_id + order_id + payhere_amount + payhere_currency + status_code + hashedSecret
+        });
 
         // 3. Verify Hash
         if (localMd5Sig !== md5sig) {
