@@ -3,8 +3,8 @@
 import crypto from "crypto";
 
 export async function generatePayHereHash(orderId: string, amount: number, currency: string) {
-    const merchantId = process.env.PAYHERE_MERCHANT_ID!.trim();
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET!.trim();
+    const merchantId = process.env.PAYHERE_MERCHANT_ID?.trim();
+    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET?.trim();
 
     if (!merchantId || !merchantSecret) {
         throw new Error("PayHere credentials not configured");

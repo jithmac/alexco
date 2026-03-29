@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
             md5sig
         } = data;
 
-        const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET!.trim();
-        const merchantId = process.env.PAYHERE_MERCHANT_ID!.trim();
+        const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET?.trim() || "";
+        const merchantId = process.env.PAYHERE_MERCHANT_ID?.trim() || "";
 
         console.log("\n--- PayHere Webhook Received ---");
         console.log("Raw Data:", JSON.stringify(data, null, 2));
