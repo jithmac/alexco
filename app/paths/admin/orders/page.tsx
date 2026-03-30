@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 
 function StatusBadge({ status }: { status: string }) {
+    const sKey = String(status || "").toUpperCase();
     const map: Record<string, { label: string; className: string }> = {
         PENDING:          { label: "Pending",          className: "bg-yellow-100 text-yellow-800 border-yellow-300" },
         CONFIRMED:        { label: "Confirmed",         className: "bg-blue-100 text-blue-800 border-blue-300" },
@@ -23,7 +24,7 @@ function StatusBadge({ status }: { status: string }) {
         DELIVERED:        { label: "Delivered",         className: "bg-green-100 text-green-800 border-green-300" },
         CANCELLED:        { label: "Cancelled",         className: "bg-red-100 text-red-800 border-red-300" },
     };
-    const s = map[status] || { label: status || "—", className: "bg-slate-100 text-slate-700" };
+    const s = map[sKey] || { label: status || "—", className: "bg-slate-100 text-slate-700" };
     return (
         <Badge variant="outline" className={`text-xs font-semibold ${s.className}`}>
             {s.label}
@@ -212,8 +213,8 @@ export default function OnlineOrdersPage() {
                                         <div className="flex flex-col gap-1.5">
                                             <StatusBadge status={order.delivery_status} />
                                             {/* Confirm button for COD and Bank Transfer waiting confirmation */}
-                                            {(order.delivery_status === 'PENDING' || order.delivery_status === 'PICKUP') &&
-                                                (order.payment_method === 'cod' || order.payment_method === 'bank_transfer') && (
+                                            {(String(order.delivery_status).toUpperCase() === 'PENDING' || String(order.delivery_status).toUpperCase() === 'PICKUP') &&
+                                                ['cod', 'cash on delivery', 'bank_transfer', 'bank transfer'].includes(String(order.payment_method).toLowerCase()) && (
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
@@ -445,19 +446,20 @@ export default function OnlineOrdersPage() {
                             </div>
 
                             {/* Quick Actions */}
-                            {(selectedOrder.delivery_status === 'PENDING' || selectedOrder.delivery_status === 'PICKUP') &&
-                                (selectedOrder.payment_method === 'cod' || selectedOrder.payment_method === 'bank_transfer') && (
-                                <div className="flex justify-end">
+                            {(String(selectedOrder.delivery_status).toUpperCase() === 'PENDING' || String(selectedOrder.delivery_status).toUpperCase() === 'PICKUP') &&
+                                ['cod', 'cash on delivery', 'bank_transfer', 'bank transfer'].includes(String(selectedOrder.payment_method).toLowerCase()) && (
+                                <div className="flex justify-end pt-4 border-t">
                                     <Button
                                         onClick={() => handleConfirm(selectedOrder.id)}
                                         disabled={confirming === selectedOrder.id}
-                                        className="gap-2"
+                                        className="gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                                        size="lg"
                                     >
                                         {confirming === selectedOrder.id
                                             ? <Loader2 className="h-4 w-4 animate-spin" />
                                             : <CheckCircle className="h-4 w-4" />
                                         }
-                                        Confirm Order
+                                        Confirm & Approve Order
                                     </Button>
                                 </div>
                             )}

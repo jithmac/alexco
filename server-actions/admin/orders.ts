@@ -36,7 +36,7 @@ export async function getOnlineOrders(statusFilter: string = "ALL") {
 
             // Normalize null delivery_status
             if (!order.delivery_status) {
-                order.delivery_status = order.payment_method === 'pickuP' ? 'PICKUP' : 'PENDING';
+                order.delivery_status = order.delivery_method === 'pickup' ? 'PICKUP' : 'PENDING';
             }
         }
 
