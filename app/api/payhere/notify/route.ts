@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
 
         // 2. Generate Local Hash
         // md5sig = strtoupper(md5(merchant_id + order_id + payhere_amount + payhere_currency + status_code + strtoupper(md5(merchant_secret))))
-
         const hashedSecret = crypto.createHash('md5')
             .update(merchantSecret)
             .digest('hex')
@@ -53,17 +52,12 @@ export async function POST(req: NextRequest) {
             .digest('hex')
             .toUpperCase();
 
-        console.log("Hash Verification Details:", {
-            expectedHash: md5sig,
-            generatedHash: localMd5Sig,
-            merchantId,
-            orderId: order_id,
-            amount: payhere_amount,
-            currency: payhere_currency,
+        console.log("Hash Verification:", {
+            expected: md5sig,
+            generated: localMd5Sig,
+            match: localMd5Sig === md5sig,
             statusCode: status_code,
-            secretLength: merchantSecret.length,
-            hashedSecret,
-            hashStringPreEncrypt: merchant_id + order_id + payhere_amount + payhere_currency + status_code + hashedSecret
+            orderId: order_id,
         });
 
         // 3. Verify Hash
@@ -72,28 +66,53 @@ export async function POST(req: NextRequest) {
             return new NextResponse("Hash Mismatch", { status: 400 });
         }
 
-        // 4. Update Database
+        // 4. Handle Payment Result
         if (status_code === "2") {
-            // Success
+            // ✅ SUCCESS — Confirm order, deduct stock, mark as paid
+            const [order] = await query(`
+                SELECT id, location_id, order_number FROM sales_orders WHERE order_number = ?
+            `, [order_id]) as any[];
+
+            if (!order) {
+                console.error(`Order not found: ${order_id}`);
+                return new NextResponse("Order not found", { status: 404 });
+            }
+
+            // Update order status
             await query(`
                 UPDATE sales_orders 
-                SET status = 'PROCESSING', payment_status = 'PAID', updated_at = NOW() 
+                SET status = 'PROCESSING', 
+                    payment_status = 'PAID', 
+                    delivery_status = 'CONFIRMED',
+                    updated_at = NOW() 
                 WHERE order_number = ?
             `, [order_id]);
-            console.log(`Order ${order_id} marked as PAID`);
+
+            // Deduct inventory for all items in the order
+            const items = await query(`
+                SELECT product_id, quantity FROM sales_items WHERE order_id = ?
+            `, [order.id]) as any[];
+
+            const { v4: uuidv4 } = await import("uuid");
+            for (const item of items) {
+                await query(`
+                    INSERT INTO inventory_ledger (transaction_id, product_id, location_id, delta, reason_code, reference_doc)
+                    VALUES (?, ?, ?, ?, 'SALE_ONLINE', ?)
+                `, [uuidv4(), item.product_id, order.location_id, -item.quantity, order.order_number]);
+            }
+
+            console.log(`✅ Order ${order_id} confirmed and stock deducted.`);
+
         } else if (status_code === "0") {
-            // Pending
-            console.log(`Order ${order_id} is PENDING`);
+            // ⏳ PENDING — PayHere is processing, do nothing yet
+            console.log(`⏳ Order ${order_id} payment is PENDING. Waiting for final status.`);
+
         } else {
-            // Failed / Canceled
-            await query(`
-                UPDATE sales_orders 
-                SET status = 'CANCELLED', payment_status = 'FAILED', updated_at = NOW() 
-                WHERE order_number = ?
-            `, [order_id]);
-            console.log(`Order ${order_id} marked as FAILED`);
+            // ❌ FAILED / CANCELLED — Do nothing, leave order as AWAITING_PAYMENT (invisible in admin)
+            console.log(`❌ Order ${order_id} payment failed/cancelled (status_code=${status_code}). No DB update.`);
         }
 
+        // Always return 200 to PayHere so it doesn't retry
         return new NextResponse("OK", { status: 200 });
 
     } catch (e) {

@@ -23,54 +23,58 @@ export async function createOnlineOrder(formData: FormData) {
         const orderNumber = `ONL-${Date.now().toString().slice(-6)}`;
         let paymentProofUrl = null;
 
-        // 1. Handle File Upload (If Bank Transfer)
+        // 1. Handle File Upload (Bank Transfer)
         if (receiptFile && paymentMethod === 'bank_transfer') {
             const bytes = await receiptFile.arrayBuffer();
             const buffer = Buffer.from(bytes);
-
-            // Create uploads directory if not exists
             const uploadDir = path.join(process.cwd(), "public/uploads/receipts");
             await mkdir(uploadDir, { recursive: true });
-
-            // Generate unique filename
             const filename = `${orderId}-${receiptFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
             const filepath = path.join(uploadDir, filename);
-
             await writeFile(filepath, buffer);
             paymentProofUrl = `/uploads/receipts/${filename}`;
         }
 
-        // 2. Get Default Location (for inventory sync)
+        // 2. Get Default Location
         const [loc] = await query("SELECT id FROM locations LIMIT 1") as any[];
         const locationId = loc ? loc.id : null;
         if (!locationId) throw new Error("Store location not found");
 
-        // 2.5 STOCK VALIDATION - Check if all items have sufficient stock
-        for (const item of items) {
-            const productId = item.productId || item.id;
-            const requestedQty = item.quantity;
-
-            // Calculate current stock from inventory_ledger
-            const [stockResult] = await query(`
-                SELECT COALESCE(SUM(delta), 0) as current_stock
-                FROM inventory_ledger
-                WHERE product_id = ? AND location_id = ?
-            `, [productId, locationId]) as any[];
-
-            const currentStock = Number(stockResult?.current_stock) || 0;
-
-            if (currentStock < requestedQty) {
-                return {
-                    success: false,
-                    error: `Insufficient stock for "${item.name}". Available: ${currentStock}, Requested: ${requestedQty}`
-                };
+        // 3. For non-PayHere orders, validate stock before creating
+        const isPayHere = paymentMethod === 'payhere';
+        if (!isPayHere) {
+            for (const item of items) {
+                const productId = item.productId || item.id;
+                const requestedQty = item.quantity;
+                const [stockResult] = await query(`
+                    SELECT COALESCE(SUM(delta), 0) as current_stock
+                    FROM inventory_ledger
+                    WHERE product_id = ? AND location_id = ?
+                `, [productId, locationId]) as any[];
+                const currentStock = Number(stockResult?.current_stock) || 0;
+                if (currentStock < requestedQty) {
+                    return {
+                        success: false,
+                        error: `Insufficient stock for "${item.name}". Available: ${currentStock}, Requested: ${requestedQty}`
+                    };
+                }
             }
         }
 
-        // Set delivery status based on delivery method
-        const deliveryStatus = deliveryMethod === 'pickup' ? 'PICKUP' : 'PENDING';
+        // 4. Determine delivery status
+        // PayHere:       AWAITING_PAYMENT (hidden from admin, no stock deducted yet)
+        // Pickup:        PICKUP
+        // COD/Bank:      PENDING
+        let deliveryStatus: string;
+        if (isPayHere) {
+            deliveryStatus = 'AWAITING_PAYMENT';
+        } else if (deliveryMethod === 'pickup') {
+            deliveryStatus = 'PICKUP';
+        } else {
+            deliveryStatus = 'PENDING';
+        }
 
-        // 3. Insert Order
+        // 5. Insert Order
         await query(`
             INSERT INTO sales_orders (
                 id, order_number, total_amount, status, payment_method, delivery_method, location_id, sync_status,
@@ -82,12 +86,10 @@ export async function createOnlineOrder(formData: FormData) {
             name, phone, email, address, deliveryStatus, paymentProofUrl
         ]);
 
-        // 4. Insert Items
+        // 6. Insert Items
         for (const item of items) {
             const lineTotal = item.price * item.quantity;
-            const { v4: uuidv4 } = await import("uuid");
-
-            // Prepare variations JSON
+            const { v4: itemUuid } = await import("uuid");
             const variationsJson = (item.variations && Object.keys(item.variations).length > 0)
                 ? JSON.stringify(item.variations)
                 : null;
@@ -95,21 +97,25 @@ export async function createOnlineOrder(formData: FormData) {
             await query(`
                 INSERT INTO sales_items (id, order_id, product_id, quantity, unit_price, line_total, variant_options)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            `, [uuidv4(), orderId, item.productId || item.id, item.quantity, item.price, lineTotal, variationsJson]);
+            `, [itemUuid(), orderId, item.productId || item.id, item.quantity, item.price, lineTotal, variationsJson]);
 
-            // Deduct Inventory
-            await query(`
-                INSERT INTO inventory_ledger (transaction_id, product_id, location_id, delta, reason_code, reference_doc)
-                VALUES (?, ?, ?, ?, 'SALE_ONLINE', ?)
-            `, [uuidv4(), item.productId || item.id, locationId, -item.quantity, orderNumber]);
+            // 7. Deduct Inventory — only for COD/Bank Transfer orders (PayHere deducts on webhook SUCCESS)
+            if (!isPayHere) {
+                const { v4: ledgerUuid } = await import("uuid");
+                await query(`
+                    INSERT INTO inventory_ledger (transaction_id, product_id, location_id, delta, reason_code, reference_doc)
+                    VALUES (?, ?, ?, ?, 'SALE_ONLINE', ?)
+                `, [ledgerUuid(), item.productId || item.id, locationId, -item.quantity, orderNumber]);
+            }
         }
 
-        // 5. Revalidate
-        const { revalidatePath } = await import('next/cache');
-        revalidatePath('/paths/admin/orders');
-        revalidatePath('/admin/inventory');
+        // 8. Revalidate cache (only for visible orders)
+        if (!isPayHere) {
+            const { revalidatePath } = await import('next/cache');
+            revalidatePath('/paths/admin/orders');
+        }
 
-        return { success: true, orderNumber };
+        return { success: true, orderNumber, orderId };
 
     } catch (err: any) {
         console.error("Create Online Order Error:", err);

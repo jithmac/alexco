@@ -5,12 +5,14 @@ import { query } from "@/lib/db";
 export async function getOnlineOrders(statusFilter: string = "ALL") {
     try {
         let sql = `
-            SELECT o.id, o.order_number, o.total_amount, o.payment_method, o.delivery_method, o.status, o.delivery_status, 
+            SELECT o.id, o.order_number, o.total_amount, o.payment_method, o.delivery_method, o.status, 
+                   o.delivery_status, o.payment_status,
                    o.customer_name, o.customer_phone, o.customer_email, o.payment_proof, o.created_at, o.shipping_address,
                    o.courier_id, o.tracking_number, c.name as courier_name, c.tracking_url_template
             FROM sales_orders o
             LEFT JOIN couriers c ON o.courier_id = c.id
             WHERE o.order_source = 'ONLINE'
+              AND (o.delivery_status IS NULL OR o.delivery_status != 'AWAITING_PAYMENT')
         `;
         const params: any[] = [];
 
@@ -23,16 +25,19 @@ export async function getOnlineOrders(statusFilter: string = "ALL") {
 
         const orders = await query(sql, params) as any[];
 
-        // For each order, fetch items (simplistic N+1 for now, or could use JSON_AGG if mysql 8 supported it well or just a join)
-        // With small volume, a loop is fine.
         for (const order of orders) {
             const items = await query(`
-                SELECT si.quantity, si.line_total, p.name as product_name, si.variant_options
+                SELECT si.quantity, si.unit_price, si.line_total, p.name as product_name, si.variant_options
                 FROM sales_items si
                 LEFT JOIN products p ON si.product_id = p.id
                 WHERE si.order_id = ?
             `, [order.id]) as any[];
             order.items = items;
+
+            // Normalize null delivery_status
+            if (!order.delivery_status) {
+                order.delivery_status = order.payment_method === 'pickuP' ? 'PICKUP' : 'PENDING';
+            }
         }
 
         return orders;
@@ -44,7 +49,6 @@ export async function getOnlineOrders(statusFilter: string = "ALL") {
 
 export async function updateOrderStatus(orderId: string, status: string, courierId?: string, trackingNumber?: string) {
     try {
-        // Build the update query dynamically or just update all if provided
         let sql = `UPDATE sales_orders SET delivery_status = ?`;
         const params: any[] = [status];
 
@@ -57,7 +61,7 @@ export async function updateOrderStatus(orderId: string, status: string, courier
             params.push(trackingNumber || null);
         }
 
-        sql += ` WHERE id = ?`;
+        sql += `, updated_at = NOW() WHERE id = ?`;
         params.push(orderId);
 
         await query(sql, params);
@@ -69,5 +73,23 @@ export async function updateOrderStatus(orderId: string, status: string, courier
     } catch (err) {
         console.error("Update Order Status Error:", err);
         return { success: false, error: "Failed to update status" };
+    }
+}
+
+export async function confirmOrder(orderId: string) {
+    try {
+        await query(`
+            UPDATE sales_orders 
+            SET delivery_status = 'CONFIRMED', status = 'PROCESSING', updated_at = NOW()
+            WHERE id = ?
+        `, [orderId]);
+
+        const { revalidatePath } = await import('next/cache');
+        revalidatePath('/paths/admin/orders');
+
+        return { success: true };
+    } catch (err) {
+        console.error("Confirm Order Error:", err);
+        return { success: false, error: "Failed to confirm order" };
     }
 }
