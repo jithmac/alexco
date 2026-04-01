@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Eye, Filter, FileText, Truck, Store, CheckCircle, Loader2, RefreshCw, Package } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getOnlineOrders, updateOrderStatus, confirmOrder } from "@/server-actions/admin/orders";
+import { adminConfirmPayHereOrder } from "@/server-actions/payment/confirm-payment";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
@@ -228,6 +229,32 @@ export default function OnlineOrdersPage() {
                                                     {confirming === order.id
                                                         ? <Loader2 className="h-3 w-3 animate-spin" />
                                                         : <><CheckCircle className="h-3 w-3 mr-1" />Confirm</>
+                                                    }
+                                                </Button>
+                                            )}
+                                            {/* Confirm Payment button for PayHere orders stuck at AWAITING_PAYMENT */}
+                                            {String(order.delivery_status).toUpperCase() === 'AWAITING_PAYMENT' &&
+                                                String(order.payment_method).toLowerCase() === 'payhere' && (
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    className="h-6 text-xs border-green-300 text-green-700 hover:bg-green-50"
+                                                    onClick={async () => {
+                                                        setConfirming(order.id);
+                                                        const result = await adminConfirmPayHereOrder(order.id);
+                                                        setConfirming(null);
+                                                        if (result.success) {
+                                                            toast({ title: "Payment Confirmed ✓" });
+                                                            loadData();
+                                                        } else {
+                                                            toast({ title: result.error || "Failed", variant: "destructive" });
+                                                        }
+                                                    }}
+                                                    disabled={confirming === order.id}
+                                                >
+                                                    {confirming === order.id
+                                                        ? <Loader2 className="h-3 w-3 animate-spin" />
+                                                        : <><CheckCircle className="h-3 w-3 mr-1" />Confirm Payment</>
                                                     }
                                                 </Button>
                                             )}
@@ -463,6 +490,35 @@ export default function OnlineOrdersPage() {
                                             : <CheckCircle className="h-4 w-4" />
                                         }
                                         Confirm & Approve Order
+                                    </Button>
+                                </div>
+                            )}
+                            {/* PayHere: Confirm Payment for stuck AWAITING_PAYMENT orders */}
+                            {String(selectedOrder.delivery_status).toUpperCase() === 'AWAITING_PAYMENT' &&
+                                String(selectedOrder.payment_method).toLowerCase() === 'payhere' && (
+                                <div className="flex justify-end pt-4 border-t">
+                                    <Button
+                                        onClick={async () => {
+                                            setConfirming(selectedOrder.id);
+                                            const result = await adminConfirmPayHereOrder(selectedOrder.id);
+                                            setConfirming(null);
+                                            if (result.success) {
+                                                toast({ title: "Payment Confirmed ✓" });
+                                                loadData();
+                                                setSelectedOrder({ ...selectedOrder, delivery_status: 'CONFIRMED', payment_status: 'PAID' });
+                                            } else {
+                                                toast({ title: result.error || "Failed", variant: "destructive" });
+                                            }
+                                        }}
+                                        disabled={confirming === selectedOrder.id}
+                                        className="gap-2 bg-green-600 hover:bg-green-700 text-white"
+                                        size="lg"
+                                    >
+                                        {confirming === selectedOrder.id
+                                            ? <Loader2 className="h-4 w-4 animate-spin" />
+                                            : <CheckCircle className="h-4 w-4" />
+                                        }
+                                        Confirm PayHere Payment
                                     </Button>
                                 </div>
                             )}

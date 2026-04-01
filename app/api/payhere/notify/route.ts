@@ -67,7 +67,8 @@ export async function POST(req: NextRequest) {
         }
 
         // 4. Handle Payment Result
-        if (status_code === "2") {
+        const statusStr = String(status_code);
+        if (statusStr === "2") {
             // ✅ SUCCESS — Confirm order, deduct stock, mark as paid
             const [order] = await query(`
                 SELECT id, location_id, order_number FROM sales_orders WHERE order_number = ?
@@ -78,32 +79,38 @@ export async function POST(req: NextRequest) {
                 return new NextResponse("Order not found", { status: 404 });
             }
 
-            // Update order status
-            await query(`
+            // Update order status — only if still AWAITING_PAYMENT (idempotent)
+            const updateResult = await query(`
                 UPDATE sales_orders 
                 SET status = 'PROCESSING', 
                     payment_status = 'PAID', 
                     delivery_status = 'CONFIRMED',
                     updated_at = NOW() 
-                WHERE order_number = ?
-            `, [order_id]);
+                WHERE order_number = ? AND delivery_status = 'AWAITING_PAYMENT'
+            `, [order_id]) as any;
 
-            // Deduct inventory for all items in the order
-            const items = await query(`
-                SELECT product_id, quantity FROM sales_items WHERE order_id = ?
-            `, [order.id]) as any[];
+            const affectedRows = updateResult?.affectedRows ?? 0;
 
-            const { v4: uuidv4 } = await import("uuid");
-            for (const item of items) {
-                await query(`
-                    INSERT INTO inventory_ledger (transaction_id, product_id, location_id, delta, reason_code, reference_doc)
-                    VALUES (?, ?, ?, ?, 'SALE_ONLINE', ?)
-                `, [uuidv4(), item.product_id, order.location_id, -item.quantity, order.order_number]);
+            if (affectedRows > 0) {
+                // Deduct inventory — only if we actually changed the status (prevents double deduction)
+                const items = await query(`
+                    SELECT product_id, quantity FROM sales_items WHERE order_id = ?
+                `, [order.id]) as any[];
+
+                const { v4: uuidv4 } = await import("uuid");
+                for (const item of items) {
+                    await query(`
+                        INSERT INTO inventory_ledger (transaction_id, product_id, location_id, delta, reason_code, reference_doc)
+                        VALUES (?, ?, ?, ?, 'SALE_ONLINE', ?)
+                    `, [uuidv4(), item.product_id, order.location_id, -item.quantity, order.order_number]);
+                }
+
+                console.log(`✅ [Webhook] Order ${order_id} confirmed and stock deducted.`);
+            } else {
+                console.log(`ℹ️ [Webhook] Order ${order_id} already confirmed (no rows affected). Skipping stock deduction.`);
             }
 
-            console.log(`✅ Order ${order_id} confirmed and stock deducted.`);
-
-        } else if (status_code === "0") {
+        } else if (statusStr === "0") {
             // ⏳ PENDING — PayHere is processing, do nothing yet
             console.log(`⏳ Order ${order_id} payment is PENDING. Waiting for final status.`);
 

@@ -12,6 +12,7 @@ import { Loader2, CheckCircle2, Truck, Store, Trash2, Plus, Minus } from "lucide
 import { createOnlineOrder } from "@/server-actions/shop/checkout";
 import { calculateDeliveryCost } from "@/server-actions/store/checkout";
 import { generatePayHereHash } from "@/server-actions/payment/payhere";
+import { confirmPayHerePayment } from "@/server-actions/payment/confirm-payment";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -183,8 +184,15 @@ export default function CheckoutPage() {
                     if ((window as any).payhere) {
                         (window as any).payhere.startPayment(payment);
 
-                        (window as any).payhere.onCompleted = function onCompleted(orderId: string) {
-                            console.log("Payment completed. OrderID:" + orderId);
+                        (window as any).payhere.onCompleted = async function onCompleted(completedOrderId: string) {
+                            console.log("Payment completed. OrderID:" + completedOrderId);
+                            // Fallback: update DB from client in case webhook didn't reach server
+                            try {
+                                await confirmPayHerePayment(result.orderNumber!);
+                                console.log("✅ Client-side fallback confirmation sent.");
+                            } catch (fallbackErr) {
+                                console.warn("Fallback confirmation failed (webhook may have handled it):", fallbackErr);
+                            }
                             setStep('success');
                             clearCart();
                             toast({ title: "Payment Successful!" });
