@@ -12,7 +12,6 @@ export async function getOnlineOrders(statusFilter: string = "ALL") {
             FROM sales_orders o
             LEFT JOIN couriers c ON o.courier_id = c.id
             WHERE o.order_source = 'ONLINE'
-              AND (o.delivery_status IS NULL OR o.delivery_status != 'AWAITING_PAYMENT')
         `;
         const params: any[] = [];
 

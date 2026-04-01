@@ -17,7 +17,9 @@ import { useToast } from "@/hooks/use-toast";
 function StatusBadge({ status }: { status: string }) {
     const sKey = String(status || "").toUpperCase();
     const map: Record<string, { label: string; className: string }> = {
+        AWAITING_PAYMENT: { label: "Awaiting Payment", className: "bg-orange-100 text-orange-800 border-orange-300" },
         PENDING:          { label: "Pending",          className: "bg-yellow-100 text-yellow-800 border-yellow-300" },
+        PROCESSING:       { label: "Processing",       className: "bg-indigo-100 text-indigo-800 border-indigo-300" },
         CONFIRMED:        { label: "Confirmed",         className: "bg-blue-100 text-blue-800 border-blue-300" },
         PICKUP:           { label: "Store Pickup",      className: "bg-teal-100 text-teal-800 border-teal-300" },
         SHIPPED:          { label: "Shipped",           className: "bg-purple-100 text-purple-800 border-purple-300" },
@@ -131,6 +133,7 @@ export default function OnlineOrdersPage() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="ALL">All Orders</SelectItem>
+                            <SelectItem value="AWAITING_PAYMENT">Awaiting Payment</SelectItem>
                             <SelectItem value="PENDING">Pending</SelectItem>
                             <SelectItem value="PICKUP">Store Pickup</SelectItem>
                             <SelectItem value="CONFIRMED">Confirmed</SelectItem>
