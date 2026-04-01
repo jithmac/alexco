@@ -60,7 +60,7 @@ export async function updateOrderStatus(orderId: string, status: string, courier
             params.push(trackingNumber || null);
         }
 
-        sql += `, updated_at = NOW() WHERE id = ?`;
+        sql += ` WHERE id = ?`;
         params.push(orderId);
 
         await query(sql, params);
@@ -79,7 +79,7 @@ export async function confirmOrder(orderId: string) {
     try {
         await query(`
             UPDATE sales_orders 
-            SET delivery_status = 'CONFIRMED', status = 'PROCESSING', updated_at = NOW()
+            SET delivery_status = 'CONFIRMED', status = 'PROCESSING'
             WHERE id = ?
         `, [orderId]);
 

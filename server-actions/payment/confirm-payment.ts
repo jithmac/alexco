@@ -21,8 +21,7 @@ export async function confirmPayHerePayment(orderNumber: string) {
             UPDATE sales_orders 
             SET status = 'PROCESSING', 
                 payment_status = 'PAID', 
-                delivery_status = 'CONFIRMED',
-                updated_at = NOW() 
+                delivery_status = 'CONFIRMED'
             WHERE order_number = ? AND delivery_status = 'AWAITING_PAYMENT'
         `, [orderNumber]) as any;
 
@@ -92,8 +91,7 @@ export async function adminConfirmPayHereOrder(orderId: string) {
             UPDATE sales_orders 
             SET status = 'PROCESSING', 
                 payment_status = 'PAID', 
-                delivery_status = 'CONFIRMED',
-                updated_at = NOW() 
+                delivery_status = 'CONFIRMED'
             WHERE id = ?
         `, [orderId]);
 
