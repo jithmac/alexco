@@ -66,11 +66,10 @@ export default function ProductCard({ product }: { product: ProductProps }) {
     };
 
     return (
-        <Card className="relative overflow-hidden group h-full flex flex-col border-0 shadow-sm hover:shadow-xl transition-all duration-300 bg-white rounded-xl">
-            {/* Full Card Link Overlay */}
-            <Link href={`/shop/product/${product.id}`} className="absolute inset-0 z-10" prefetch={false}>
-                <span className="sr-only">View {product.name}</span>
-            </Link>
+        <Card 
+            className="relative overflow-hidden group h-full flex flex-col border-0 shadow-sm hover:shadow-xl transition-all duration-300 bg-white rounded-xl cursor-pointer"
+            onClick={() => router.push(`/shop/product/${product.id}`)}
+        >
 
             {/* Image Area */}
             <div className="relative aspect-square bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
@@ -125,16 +124,18 @@ export default function ProductCard({ product }: { product: ProductProps }) {
             </div>
 
             {/* Content */}
-            <CardContent className="p-4 flex-1 flex flex-col pointer-events-none">
+            <CardContent className="p-4 flex-1 flex flex-col">
                 {product.category && (
                     <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">
                         {product.category}
                     </div>
                 )}
                 <div className="block">
-                    <h3 className="font-semibold text-slate-800 leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors">
-                        {product.name}
-                    </h3>
+                    <Link href={`/shop/product/${product.id}`} prefetch={true} className="inline-block" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="font-semibold text-slate-800 leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors">
+                            {product.name}
+                        </h3>
+                    </Link>
                 </div>
 
                 {/* Spec Tags */}
@@ -173,14 +174,18 @@ export default function ProductCard({ product }: { product: ProductProps }) {
             </CardContent>
 
             {/* Quick Add Button (Mobile Friendly) */}
-            <div className="p-4 pt-0 lg:hidden relative z-20">
+            <div className="p-4 pt-0 lg:hidden pb-4">
                 <Button
-                    className="w-full"
-                    size="sm"
-                    onClick={handleAddToCart}
+                    className="w-full h-12 text-base active:scale-95 transition-transform"
+                    size="lg"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleAddToCart(e);
+                    }}
                     disabled={isOutOfStock}
                 >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    <ShoppingCart className="h-5 w-5 mr-2" />
                     {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 </Button>
             </div>
