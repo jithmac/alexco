@@ -77,25 +77,31 @@ export default function CartSheet() {
                                         <div className="flex items-center justify-between mt-2">
                                             <p className="text-sm font-bold">LKR {(item.price * item.quantity).toLocaleString()}</p>
                                             <div className="flex items-center gap-1">
-                                                <button
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-10 w-10 min-w-[40px] text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"
                                                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                    className="h-7 w-7 rounded-md border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"
                                                 >
-                                                    <Minus className="h-3 w-3" />
-                                                </button>
+                                                    <Minus className="h-4 w-4" />
+                                                </Button>
                                                 <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
-                                                <button
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-10 w-10 min-w-[40px] text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"
                                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                    className="h-7 w-7 rounded-md border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"
                                                 >
-                                                    <Plus className="h-3 w-3" />
-                                                </button>
-                                                <button
+                                                    <Plus className="h-4 w-4" />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-10 w-10 min-w-[40px] text-red-500 hover:bg-red-50 hover:text-red-600 active:bg-red-100 transition-colors ml-1"
                                                     onClick={() => removeItem(item.id)}
-                                                    className="h-7 w-7 rounded-md flex items-center justify-center text-red-500 hover:bg-red-50 active:bg-red-100 transition-colors ml-1"
                                                 >
-                                                    <Trash2 className="h-3.5 w-3.5" />
-                                                </button>
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>

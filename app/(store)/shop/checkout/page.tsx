@@ -458,7 +458,7 @@ export default function CheckoutPage() {
                                                             <Button
                                                                 variant="outline"
                                                                 size="icon"
-                                                                className="h-6 w-6"
+                                                                className="h-10 w-10 min-w-[40px]"
                                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                             >
                                                                 <Minus className="h-3 w-3" />
@@ -467,7 +467,7 @@ export default function CheckoutPage() {
                                                             <Button
                                                                 variant="outline"
                                                                 size="icon"
-                                                                className="h-6 w-6"
+                                                                className="h-10 w-10 min-w-[40px]"
                                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                                             >
                                                                 <Plus className="h-3 w-3" />
@@ -486,8 +486,8 @@ export default function CheckoutPage() {
                                                             </div>
                                                         )}
                                                     </div>
-                                                    <Button variant="ghost" size="icon" className="h-6 w-6 text-red-400" onClick={() => removeItem(item.id)}>
-                                                        <Trash2 className="h-3 w-3" />
+                                                    <Button variant="ghost" size="icon" className="h-10 w-10 min-w-[40px] text-red-400" onClick={() => removeItem(item.id)}>
+                                                        <Trash2 className="h-4 w-4" />
                                                     </Button>
                                                 </div>
                                             </div>

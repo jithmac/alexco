@@ -66,23 +66,27 @@ export default function CartSidebar({
                             <div className="text-sm font-bold text-blue-600">LKR {item.price.toLocaleString()}</div>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                            <Button variant="ghost" size="icon" className="h-6 w-6 text-slate-400 hover:text-red-500" onClick={() => onRemove(item.cartItemId)}>
+                            <Button variant="ghost" size="icon" className="h-10 w-10 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors" onClick={() => onRemove(item.cartItemId)}>
                                 <Trash2 className="h-4 w-4" />
                             </Button>
                             <div className="flex items-center gap-2 bg-slate-100 rounded-md p-0.5">
-                                <button
-                                    className="h-7 w-7 flex items-center justify-center hover:bg-white rounded-md transition-colors"
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-10 w-10 border-0 hover:bg-white text-slate-600 transition-colors"
                                     onClick={() => onUpdateQuantity(item.cartItemId, -1)}
                                 >
-                                    <Minus className="h-3 w-3" />
-                                </button>
+                                    <Minus className="h-4 w-4" />
+                                </Button>
                                 <span className="text-sm font-semibold w-6 text-center">{item.quantity}</span>
-                                <button
-                                    className="h-7 w-7 flex items-center justify-center hover:bg-white rounded-md transition-colors"
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-10 w-10 border-0 hover:bg-white text-slate-600 transition-colors"
                                     onClick={() => onUpdateQuantity(item.cartItemId, 1)}
                                 >
-                                    <Plus className="h-3 w-3" />
-                                </button>
+                                    <Plus className="h-4 w-4" />
+                                </Button>
                             </div>
                         </div>
                     </div>
